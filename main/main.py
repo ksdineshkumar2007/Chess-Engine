@@ -1,8 +1,7 @@
 from board_file import create_board
-from pawn_move import pawn_move
+from knight_moves import knight_move
 def main():
     board=create_board()
-    print(pawn_move(board, 1, 0, "black"))   
-    print(pawn_move(board, 5, 0, "white"))  
+    print(knight_move(board, 7, 1, "white")) 
 if __name__=="__main__":
     main()
