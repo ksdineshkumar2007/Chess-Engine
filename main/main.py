@@ -1,8 +1,8 @@
 from board_file import create_board
-from bishop_moves import bishop_move
+from get_best_move import get_best_move
 def main():
     board=create_board()
-    print(bishop_move(board, 4, 4, "white"))
+    print(get_best_move(board, "white", 3))
 
 if __name__=="__main__":
     main()
