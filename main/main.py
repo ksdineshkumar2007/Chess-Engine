@@ -1,31 +1,51 @@
-
 from board_file import create_board
 from print_b_file import print_board
 from apply import apply_move, undo_move
 from get_best_move import get_best_move
+from king_check import is_in_check
+from legal_moves import get_legal_moves
 
 def play():
     board = create_board()
     while True:
         print_board(board)
         
-        # Human move
-        user_input = input("Enter move (e.g. 64 54): ")
-        if user_input=="quit":
+        # Check if human has legal moves
+        if not get_legal_moves(board, "white"):
+            if is_in_check(board, "white"):
+                print("Checkmate! Engine wins!")
+            else:
+                print("Stalemate! Draw!")
             break
-        from_r, from_c = int(user_input[0]), int(user_input[1])
-        to_r, to_c = int(user_input[3]), int(user_input[4])
-        apply_move(board, ((from_r, from_c), (to_r, to_c)))
+
+        # Human move
+        while True:
+            user_input = input("Enter move (e.g. 64 54): ")
+            if user_input == "quit":
+                break
+            from_r, from_c = int(user_input[0]), int(user_input[1])
+            to_r, to_c = int(user_input[3]), int(user_input[4])
+            move = ((from_r, from_c), (to_r, to_c))
+            if move in get_legal_moves(board, "white"):
+                apply_move(board, move)
+                break
+            else:
+                print("Illegal move! Try again.")
         
+        if user_input == "quit":
+            break
+
         print("\nEngine thinking...")
-        engine_move = get_best_move(board, "black", 3)
+        engine_move = get_best_move(board, "black", 2)
         if engine_move:
             apply_move(board, engine_move)
             print(f"Engine played: {engine_move}")
         else:
-            print("Engine has no moves!")
+            if is_in_check(board, "black"):
+                print("Checkmate! You win!")
+            else:
+                print("Stalemate! Draw!")
             break
 
 if __name__ == "__main__":
     play()
-
