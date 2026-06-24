@@ -7,7 +7,8 @@ def get_best_move(board, color, depth):
     
     for move in get_allmoves(board, color):
         captured = apply_move(board, move)
-        score = minimax(board, "black" if color == "white" else "white", depth-1)
+        score = minimax(board, "black" if color == "white" else "white", depth-1, -999999, 999999)
+
         undo_move(board, move, captured)
         
         if color == "white" and score > best:
