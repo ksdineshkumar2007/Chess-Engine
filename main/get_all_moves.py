@@ -5,7 +5,7 @@ from rook_moves import rook_move
 from king_moves import king_move
 from knight_moves import knight_move
 
-def get_allmoves(board, color):
+def get_allmoves(board, color, castling_rights):
     moves = []
     piece_moves = {
         1: pawn_move, 2: rook_move, 3: bishop_move,
@@ -15,7 +15,11 @@ def get_allmoves(board, color):
         for j in range(8):
             piece = board[i][j]
             if (color == "white" and piece > 0) or (color == "black" and piece < 0):
-                move_fn = piece_moves[abs(piece)]
-                for move in move_fn(board, i, j, color):
-                    moves.append(((i,j), move))
+                if abs(piece) == 6:
+                    for move in king_move(board, i, j, color, castling_rights):
+                        moves.append(((i,j), move))
+                else:
+                    move_fn = piece_moves[abs(piece)]
+                    for move in move_fn(board, i, j, color):
+                        moves.append(((i,j), move))
     return moves
