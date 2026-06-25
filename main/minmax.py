@@ -1,13 +1,14 @@
 from apply import apply_move, undo_move
 from evaluate_piece import evaluate
 from get_all_moves import get_allmoves
+from order_moves import order_moves
 
 def minimax(board, color, depth, castling_rights, en_passant, alpha=-999999, beta=999999):
     if depth == 0:
         return evaluate(board)
     
     best = -999999 if color == "white" else 999999
-    for move in get_allmoves(board, color, castling_rights, en_passant):
+    for move in order_moves(board, get_allmoves(board, color, castling_rights, en_passant)):
         if alpha >= beta:
             break
         captured, piece, prev_castling, ep_captured_pos = apply_move(board, move, castling_rights, en_passant)

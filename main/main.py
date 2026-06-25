@@ -40,7 +40,7 @@ def play():
             break
 
         print("\nEngine thinking...")
-        engine_move = get_best_move(board, "black", 2, castling_rights, en_passant)
+        engine_move = get_best_move(board, "black", 3, castling_rights, en_passant)
         if engine_move:
             apply_move(board, engine_move, castling_rights, en_passant)
             print(f"Engine played: {engine_move}")
