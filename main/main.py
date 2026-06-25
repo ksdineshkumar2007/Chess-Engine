@@ -11,11 +11,13 @@ def play():
         "white": {"kingside": True, "queenside": True},
         "black": {"kingside": True, "queenside": True}
     }
+    en_passant = [None]
+
     while True:
         print_board(board)
         
-        if not get_legal_moves(board, "white", castling_rights):
-            if is_in_check(board, "white", castling_rights):
+        if not get_legal_moves(board, "white", castling_rights, en_passant):
+            if is_in_check(board, "white", castling_rights, en_passant):
                 print("Checkmate! Engine wins!")
             else:
                 print("Stalemate! Draw!")
@@ -28,8 +30,8 @@ def play():
             from_r, from_c = int(user_input[0]), int(user_input[1])
             to_r, to_c = int(user_input[3]), int(user_input[4])
             move = ((from_r, from_c), (to_r, to_c))
-            if move in get_legal_moves(board, "white", castling_rights):
-                apply_move(board, move, castling_rights)
+            if move in get_legal_moves(board, "white", castling_rights, en_passant):
+                apply_move(board, move, castling_rights, en_passant)
                 break
             else:
                 print("Illegal move! Try again.")
@@ -38,12 +40,12 @@ def play():
             break
 
         print("\nEngine thinking...")
-        engine_move = get_best_move(board, "black", 2, castling_rights)
+        engine_move = get_best_move(board, "black", 2, castling_rights, en_passant)
         if engine_move:
-            apply_move(board, engine_move, castling_rights)
+            apply_move(board, engine_move, castling_rights, en_passant)
             print(f"Engine played: {engine_move}")
         else:
-            if is_in_check(board, "black", castling_rights):
+            if is_in_check(board, "black", castling_rights, en_passant):
                 print("Checkmate! You win!")
             else:
                 print("Stalemate! Draw!")
